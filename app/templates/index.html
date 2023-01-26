@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Form to upload a image to test the trained model</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        {% if msg %}
+            <p>{{ msg }}</p>
+        {% endif %}
+        {% if prediction %}
+            <h1>Result (cat or dog)</h1>
+            {% if labels|length == 0 %}
+                <h2>No labels found for the uploaded image</h2>
+            {% endif %}
+            <ul>
+                {% for label in labels %}
+                <li>{{ label.Name }} - {{ label.Confidence }} %</li>
+            </ul>
+            {% endfor %}
+        {% endif %}
+    </body>
+</html>
