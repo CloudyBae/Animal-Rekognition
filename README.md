@@ -1,4 +1,4 @@
-Animal-Rekognition is a Machine Learning Application that can determine whether an animal is either a cat or dog. The purpose of this application is to correctly identify an animal because it is 2023 and it should not be socially acceptable to mix up to two. 
+Animal-Rekognition is a Machine Learning Application that can determine whether an animal is either a cat or dog. The purpose of this application is to correctly identify an animal because it is 2023 and it should not be socially acceptable to mix up the two. 
 
 Created 2 datasets, 1 with 100+ dog photos, and the other with 100+ cat photos to train the Rekognition model. Labeled each image either "Cat" or "Dog" according to the type of animal they are in the photo. 
 ![Screenshot_1](https://user-images.githubusercontent.com/109190196/214764547-3f8b1428-fe96-4152-9b38-3bb452252782.jpg)
