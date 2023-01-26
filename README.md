@@ -7,7 +7,7 @@ Used Session Manager in the EC2 instance created from the CloudFormation templat
 ![Screenshot_3](https://user-images.githubusercontent.com/109190196/214764998-e7bf611e-c146-4b05-ac36-3dd0510866bd.jpg)
 ![Screenshot_2](https://user-images.githubusercontent.com/109190196/214765008-77cdb664-1981-4a2c-a8db-22a9d18cc71c.jpg)
 
-You are able to upload either a JPG or PNG file of either a cat OR dog (you cannot use a photo with both). The maximum file size is 15MB and the maximum width and height for the image is 2096 pixels. The application will determine if it a cat or dog with a percentage of how sure the application is.
+You are able to upload either a JPG or PNG file of either a cat OR dog (you cannot use a photo with both). The maximum file size is 15MB and the maximum width and height for the image is 4096 pixels. The application will determine if it a cat or dog with a percentage of how sure the application is.
 
 I uploaded the following image (was not used in the dataset) of my cat and this was the result.
 ![KakaoTalk_20230125_225622769](https://user-images.githubusercontent.com/109190196/214765198-66db298c-8a5f-42a6-92f9-61f1ae6267d7.jpg)
