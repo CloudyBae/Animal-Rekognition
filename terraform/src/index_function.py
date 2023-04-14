@@ -12,6 +12,7 @@ dynamodb = boto3.resource('dynamodb')
 COLLECTION_ID = os.environ["COLLECTION_ID"]
 TABLE_ID = os.environ["TABLE_ID"]
 max_faces = int(os.environ["MAX_FACES_COUNT"])
+threshold = float(os.environ["FACE_DETECT_THRESHOLD"])
 
 collection = rekognition.describe_collection(CollectionId=COLLECTION_ID)
 collection["CollectionId"] = COLLECTION_ID
@@ -39,7 +40,6 @@ def lambda_handler(event, context):
                     del face['face_id']
                     face = json.loads(json.dumps(face), parse_float=Decimal)
                     table.put_item(Item=face)
-                return ''
             except Exception as e:
                 print(e)
                 print("Error processing object {} from bucket {}. ".format(key, bucket) +
