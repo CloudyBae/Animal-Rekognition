@@ -44,18 +44,6 @@ variable "db_password" {
   default = "password"
 }
 
-variable "alb_security_group_name" {
-  default = "alb_animalrekog_sg"
-}
-
-variable "instance_security_group_name" {
-  default = "instance_animalrekog_sg"
-}
-
-variable "db_security_group_name" {
-  default = "db_animalrekog_sg"
-}
-
 variable "ecs_task_cpu" {
   default = 256
 }

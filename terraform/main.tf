@@ -36,6 +36,27 @@ resource "aws_internet_gateway" "animalrekog_igw" {
   vpc_id = aws_vpc.animalrekog_vpc.id
 }
 
+# create nat gateway
+resource "aws_nat_gateway" "animalrekog_natgw" {
+  count = length(var.public_subnet_cidr_blocks)
+
+  allocation_id = aws_eip.animalrekog_eip[count.index].id
+  subnet_id     = aws_subnet.public_subnet[count.index].id
+
+  tags = {
+    Name = "animalrekog_natgw_${count.index + 1}"
+  }
+}
+
+resource "aws_eip" "animalrekog_eip" {
+  count = length(var.public_subnet_cidr_blocks)
+  vpc = true
+
+  tags = {
+    Name = "animalrekog_eip_${count.index + 1}"
+  }
+}
+
 # create route tables
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.animalrekog_vpc.id
