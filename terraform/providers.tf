@@ -9,7 +9,7 @@ terraform {
 
 provider "aws" {
   region                   = "${var.region}"
-  shared_config_files      = ["${var.share_config_files}"]
+  shared_config_files      = ["${var.shared_config_files}"]
   shared_credentials_files = ["${var.shared_credentials_files}"]
   profile                  = "${var.profile}"
 }

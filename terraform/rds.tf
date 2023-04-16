@@ -12,9 +12,9 @@ resource "aws_db_subnet_group" "animalrekog_db_subnet_group" {
 resource "aws_db_instance" "animalrekog_db" {
   allocated_storage    = 20
   engine               = "mysql"
-  engine_version       = "8.0.21"
+  engine_version       = "8.0"
   instance_class       = "db.t2.micro"
-  name                 = "animalrekog_db"
+  db_name                 = "animalrekog_db"
   username             = "${var.db_username}"
   password             = "${var.db_password}"
   publicly_accessible = false
@@ -31,6 +31,7 @@ resource "aws_db_instance" "animalrekog_db" {
 # rds security group
 resource "aws_security_group" "animalrekog_db_sg" {
   name_prefix = "animalrekog_db_sg"
+  vpc_id      = aws_vpc.animalrekog_vpc.id
 
   ingress {
     from_port   = 3306

@@ -24,7 +24,7 @@ resource "aws_subnet" "private_subnet" {
   count = length(var.private_subnet_cidr_blocks)
 
   cidr_block = var.private_subnet_cidr_blocks[count.index]
-  vpc_id     = aws_vpc.app_vpc.id
+  vpc_id     = aws_vpc.animalrekog_vpc.id
 
   tags = {
     Name = "animalrekog_private_subnet_${count.index + 1}"

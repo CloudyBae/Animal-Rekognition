@@ -1,6 +1,6 @@
 # create application load balancer
 resource "aws_lb" "animalrekog_alb" {
-  name               = "animalrekog_alb"
+  name               = "animalrekog-alb"
   internal           = false
   load_balancer_type = "application"
 
@@ -11,7 +11,7 @@ resource "aws_lb" "animalrekog_alb" {
 
 # create target group for alb
 resource "aws_lb_target_group" "animalrekog_targetgroup" {
-  name     = "animalrekog_targetgroup"
+  name     = "animalrekog-targetgroup"
   port     = 80
   protocol = "HTTP"
 
@@ -23,6 +23,7 @@ resource "aws_lb_target_group" "animalrekog_targetgroup" {
 # application load balancer security group
 resource "aws_security_group" "animalrekog_alb_sg" {
   name_prefix = "animalrekog_alb_sg"
+  vpc_id      = aws_vpc.animalrekog_vpc.id
 
   ingress {
     from_port   = 80
@@ -36,6 +37,6 @@ resource "aws_security_group" "animalrekog_alb_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/"]
+    cidr_blocks = ["0.0.0.0/0"]
  }
 } 
