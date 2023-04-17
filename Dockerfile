@@ -1,9 +1,7 @@
-FROM python:3.9
+FROM python:3.8-slim-buster
 WORKDIR /app
-RUN pip install --upgrade pip
-RUN pip install flask
-RUN pip install boto3
-RUN pip install --upgrade Pillow
-COPY . .
+RUN pip3 install Flask boto3 pillow
+COPY templates/ templates/
+COPY app.py app.py
 ENV FLASK_APP=app
-CMD ["python","app/app.py"]
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=80"]
