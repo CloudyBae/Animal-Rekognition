@@ -1,0 +1,13 @@
+In the EC2 instance created by the CloudFormation Template, connect to the instance with session manager. Use the following commands to build the Docker image and store it in ECR.
+In the terminal window, enter the following commands to build the Docker Image:
+   sudo amazon-linux-extras install docker -y
+   sudo service docker start
+   sudo usermod -a -G docker ec2-user
+   sudo su - ec2-user
+   unzip app.zip
+In the terminal window, enter the following commands to push the Docker Image to the ECR repository (use your AWS ID to replace <AWS Account ID>):
+   docker build -t skynet .
+   docker tag skynet:latest <AWS Account ID>.dkr.ecr.us-east-1.amazonaws.com/skynet-repo:latest
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS Account ID>.dkr.ecr.us-east-1.amazonaws.com
+   docker push <AWS Account ID>.dkr.ecr.us-east-1.amazonaws.com/skynet-repo:latest
+...
