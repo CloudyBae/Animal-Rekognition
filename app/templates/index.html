@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <h1>Form to upload a image to test the trained model</h1>
+        <h1>Upload any animal image. App will tell you the top 5 results of what is in your pic!</h1>
+        <h1>Each result will have a confidence rating of the % the app thinks is correct!</h1>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="file">
             <input type="submit" value="Upload">
@@ -10,7 +11,7 @@
             <p>{{ msg }}</p>
         {% endif %}
         {% if prediction %}
-            <h1>Result (cat or dog)</h1>
+            <h1>Results</h1>
             {% if labels|length == 0 %}
                 <h2>No labels found for the uploaded image</h2>
             {% endif %}
