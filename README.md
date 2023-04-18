@@ -7,7 +7,12 @@ First I implemented infrastructure-as-code to my AWS resources with the use of T
 
 Before my project used "Custom Labels" in Amazon Rekognition and I have to label each photo 1 by 1 on the console. I didn't want to do this so I decided that I wanted to code something to take advantage of Rekognition's API. 
 
-First I made tested a Lambda function that got triggered by objects added to an S3 bucket. From there it would take those objects and let Rekognition label them and it returns it back to the S3 bucket. This concept was okay but I decided to actually code the use of Rekognition's API directly into my Flask app. I did some testing in my terminal to make sure the flask app was working as intended.  
+First I made tested a Lambda function that got triggered by objects added to an S3 bucket. From there it would take those objects and let Rekognition label them and it returns it back to the S3 bucket. I tested the code in the Lambda function console to make sure it was working as inteded.
+![Screenshot_2](https://user-images.githubusercontent.com/109190196/232651479-2e234d19-8661-4b1a-aaf9-316fc4e3be94.jpg)  
+![Screenshot_3](https://user-images.githubusercontent.com/109190196/232651582-438b2c9d-cbf0-4c78-943a-e67d59179ca7.jpg)  
+ 
+
+This concept was okay but I decided to actually code the use of Rekognition's API directly into my Flask app. I did some testing in my terminal to make sure the flask app was working as intended.  
 ![InkedScreenshot_10](https://user-images.githubusercontent.com/109190196/232644675-95ec4045-47d3-4c38-a388-acc49bab279d.jpg)
 
 After the flask app was working as intended, I created a Jenkins pipeline with a webhook to my GitHub repo to automatically build a Docker image of my flask app and push it into AWS ECR whenever there are new changes to my GitHub repo.   
