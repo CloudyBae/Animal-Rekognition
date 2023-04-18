@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, json
 from werkzeug.utils import secure_filename
+from PIL import Image
 import boto3
 import os
 
@@ -13,12 +14,13 @@ app.config['MAX_WIDTH_HEIGHT'] = 4096
 
 # set up the Amazon S3 client
 s3 = boto3.client('s3', region_name='us-east-1')
-
 rekognition = boto3.client('rekognition', region_name='us-east-1')
 
 # AWS S3 bucket configuration
-BUCKET_NAME = os.environ.get("BUCKET_NAME")
+BUCKET_NAME = "animalrekog-bucket"
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.')[-1].lower() in app.config['UPLOAD_EXTENSIONS']
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.')[-1].lower() in app.config['UPLOAD_EXTENSIONS']
@@ -27,22 +29,36 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        file = request.files['file']
-        if file.filename == '':
-            return render_template('index.html', error='No file selected')
+        if "file" not in request.files:
+            msg = "No file selected"
+            return render_template("index.html", msg=msg)
 
-        if not allowed_file(file.filename):
-            return render_template('index.html', error='Invalid file extension')
+        file = request.files["file"]
 
-        # Save the file to local disk
+        if file.filename == "":
+            msg = "No file selected"
+            return render_template("index.html", msg=msg)
+
+        if file and allowed_file(file.filename):
+            file.seek(0, os.SEEK_END)
+            file_size = file.tell()
+            if file_size > app.config['MAX_SIZE']:
+                msg = "File size must be less than 15MB"
+                return render_template("index.html", msg=msg)
+            file.seek(0)
+            img = Image.open(file)
+            if img.width > app.config['MAX_WIDTH_HEIGHT'] or img.height > app.config['MAX_WIDTH_HEIGHT']:
+                msg = "Height and width must be less than 4096px"
+                return render_template("index.html", msg=msg)
+        else:
+            msg = "File type not supported. Must be .jpg, .jpeg, or .png"
+            return render_template("index.html", msg=msg)
+
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+        file.seek(0)
+        s3.upload_fileobj(file, BUCKET_NAME, filename)
 
-        # Upload the file to S3
-        s3.upload_file(os.path.join(app.config['UPLOAD_PATH'], filename),
-                       app.config['S3_BUCKET'], filename)
-
-        # Call Amazon Rekognition to detect labels
+        # detect labels using rekognition
         response = rekognition.detect_labels(
             Image={
                 'S3Object': {
@@ -50,18 +66,12 @@ def upload_file():
                     'Name': filename
                 }
             },
-            MaxLabels=5,
-            MinConfidence=50
+            MaxLabels=5
         )
-
-        labels = []
-        for label in response['Labels']:
-            labels.append(f"{label['Name']} - {label['Confidence']:.2f}%")
-
-        return render_template('index.html', success='File uploaded successfully', labels=labels)
-
-    return render_template('index.html')
-
+    
+        return render_template("index.html", labels=response['Labels'], prediction=True)
+    
+    return render_template("index.html")
 
 if __name__ == '__main__':
   app.run()
